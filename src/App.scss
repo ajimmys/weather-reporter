@@ -48,3 +48,10 @@
   color: var(--primary-text);
   height: 100vh;
 }
+
+.waitingMessage{
+  position: absolute;
+  font-size: 2rem;
+  left: 50vw;
+  top: 50vh;
+}
