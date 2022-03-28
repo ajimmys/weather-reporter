@@ -1,76 +1,146 @@
 import React, {Component} from 'react'
+import {convertDt, convertImage, convertDescription} from './converstions'
 
 
-class HourlyWeather extends Component{
-    constructor(props){
+class HourlyWeather extends Component {
+    constructor(props) {
         super(props)
         this.state = {
-            show_details: false
+            hour_1: {
+                loaded: false,
+                hour_mod: 1,
+                show_details: false,
+                time: 0,
+                temp: 0,
+                feels_like: 0,
+                image_code: '',
+                description: '',
+                precipitation: 0,
+                wind: 0,
+                humidity: 0,
+                uv_index: 0
+            },
+            hour_3: {
+                hour_mod: 3,
+                show_details: false,
+                time: 0,
+                temp: 0,
+                feels_like: 0,
+                image_code: '',
+                description: '',
+                precipitation: 0,
+                wind: 0,
+                humidity: 0,
+                uv_index: 0
+            },
+            hour_5: {
+                hour_mod: 5,
+                show_details: false,
+                time: 0,
+                temp: 0,
+                feels_like: 0,
+                image_code: '',
+                description: '',
+                precipitation: 0,
+                wind: 0,
+                humidity: 0,
+                uv_index: 0
+            },
+            hour_7: {
+                hour_mod: 7,
+                show_details: false,
+                time: 0,
+                temp: 0,
+                feels_like: 0,
+                image_code: '',
+                description: '',
+                precipitation: 0,
+                wind: 0,
+                humidity: 0,
+                uv_index: 0
+            },
+            hour_9: {
+                hour_mod: 9,
+                show_details: false,
+                time: 0,
+                temp: 0,
+                feels_like: 0,
+                image_code: '',
+                description: '',
+                precipitation: 0,
+                wind: 0,
+                humidity: 0,
+                uv_index: 0
+            }
         }
+
+        this.loadDataToState = this.loadDataToState.bind(this)
 
     }
 
     componentDidMount() {
     }
 
-    convertDt(dt){
-        let date = new Date(dt*1000);
-        let hour = date.getHours()
-
-        if(hour > 12){
-            hour = hour - 12
-            return hour + ":00 PM"
-        } else if(hour === 12){
-            return hour + ":00 PM"
-        }else if(hour === 0){
-            return "12:00AM"
-        } else{
-            return hour + ":00 AM"
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (this.state.hour_1['loaded'] === false) {
+            this.loadDataToState()
         }
     }
 
-    convertImage(imageID){
-        return 'http://openweathermap.org/img/wn/'+ imageID + '.png'
-    }
-
-    convertDescription(description){
-        let words = description.split(" ")
-
-        for( let i = 0; i < words.length; i++){
-            words[i] = words[i][0].toUpperCase() + words[i].substring(1);
-            if(i+1 !== words.length){
-                words[i] += " "
-            }
+    loadDataToState() {
+        this.setState({hour_1: {loaded: true}})
+        for (let i = 1; i <= 9; i += 2) {
+            let card_id = "hour_" + i
+            this.setState(prevState => ({
+                [card_id]: {
+                    hour_mod: i,
+                    loaded: true,
+                    time: this.props.APIData['hourly'][i]['dt'],
+                    temp: this.props.APIData['hourly'][i]['temp'],
+                    feels_like: this.props.APIData['hourly'][i]['feels_like'],
+                    image_code: this.props.APIData['hourly'][i]['weather'][0]['icon'],
+                    description: this.props.APIData['hourly'][i]['weather'][0]['description'],
+                    precipitation: this.props.APIData['hourly'][i]['pop'],
+                    wind: this.props.APIData['hourly'][i]['wind_speed'],
+                    humidity: this.props.APIData['hourly'][i]['humidity'],
+                    uv_index: this.props.APIData['hourly'][i]['uvi'],
+                }
+            }));
         }
-
-        return words
     }
+
 
     //TODO ADD DROPDOWN FUNCTION FOR MORE DETAILS
     //TODO Add dropdown with more information
-    //TODO Add weather effects based on current weather - https://codepen.io/ste-vg/pen/GqaZbo
-    render(){
-        const num_layouts = [0, 2, 4, 6, 8, 10]
-        const hourly_layouts = num_layouts.map((n) =>
-            <div key={n} className="hourly-layout">
-                <span className="card-top">
-                    <p className='time'>{this.convertDt(this.props.APIData['hourly'][n]['dt'])}</p>
-                    <button className='drop-button' onClick={this.toggleDetails}> V </button>
+    render() {
+        let layouts = (<div>
+            <p>Loading Data...</p>
+        </div>)
+
+        if (this.state.hour_1['loaded']) {
+            layouts = Object.entries(this.state).map((hourly_data) =>
+                <span key={hourly_data[0]} className="hourly-layout">
+                    <span className="card-top">
+                        <p className='time'>{convertDt(hourly_data[1]['time'])}</p>
+                        <button className='drop-button' onClick={this.toggleDetails}> V </button>
+                    </span>
+                        <span className='weather-conditions'>
+                        <img src={convertImage(hourly_data[1]['image_code'])}
+                             alt="Hour's Weather"/>
+                        <p className='description'>{convertDescription(hourly_data[1]['description'])}</p>
+                    </span>
+                        <p className='temp'>{hourly_data[1]['temp'] + ' \xB0F'}</p>
+                        <span className='feels-like'>
+                        <p>Feels like:</p>
+                        <p>{hourly_data[1]['feels_like'] + ' \xB0F'}</p>
+                    </span>
                 </span>
-                <span className='weather-conditions'>
-                    <img src={this.convertImage(this.props.APIData['hourly'][n]['weather'][0]['icon'])} alt="Hour's Weather"/>
-                    <p className='description'>{this.convertDescription(this.props.APIData['hourly'][n]['weather'][0]['description'])}</p>
-                </span>
-                <p className='temp'>{this.props.APIData['hourly'][n]['temp'] + ' \xB0F'}</p>
-                <span className='feels-like'>
-                    <p>Feels like:</p>
-                    <p>{this.props.APIData['hourly'][n]['feels_like'] + ' \xB0F'}</p>
-                </span>
-            </div>
-        )
-        return(
+            )
+        }
+
+        return (
             <div className="weather-container weekly-layout">
-                {hourly_layouts}
+                {layouts}
             </div>
         );
     }

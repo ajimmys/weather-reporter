@@ -1,5 +1,6 @@
 import React, {Component, useEffect} from "react";
 import HourlyWeather from "./HourlyWeather";
+import CurrentWeather from "./CurrentWeather";
 
 class AppComponent extends Component{
     constructor(props) {
@@ -62,7 +63,9 @@ class AppComponent extends Component{
     render() {
         return (
             this.state.APIResponse != null ? (
-                <div>
+                <div className="weather-report-container">
+                    <CurrentWeather
+                        APIData={this.state.APIResponse}/>
                     <HourlyWeather
                         APIData={this.state.APIResponse} />
                 </div>
