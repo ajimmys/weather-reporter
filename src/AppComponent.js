@@ -19,7 +19,7 @@ class AppComponent extends Component{
         const lon = this.state.longitude
         const APIKey = '90aba9bd7acc13c777cabeb25750abcc'
         const APICall =
-            `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&appid=${APIKey}`
+            `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&appid=${APIKey}&units=imperial`
         fetch(APICall)
             .then(response => response.json())
             .then(response => {
@@ -34,7 +34,7 @@ class AppComponent extends Component{
                 this.fetchLocAPI()
             } else if (this.state.APIResponse['cod'] === 429){
                 console.log("API Request limit reached")
-            } else {
+            } else if (!this.state.APIResponse['lat']) {
                 console.log("Fetching Weather Data")
             }
         } else {
