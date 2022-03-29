@@ -1,6 +1,8 @@
 import React, {Component, useEffect} from "react";
 import HourlyWeather from "./HourlyWeather";
 import CurrentWeather from "./CurrentWeather";
+import FiveDayWeather from "./FiveDayWeather";
+import SevenDayWeather from "./SevenDayWeather";
 
 class AppComponent extends Component{
     constructor(props) {
@@ -61,13 +63,21 @@ class AppComponent extends Component{
     }
 
     render() {
+        let layout = (this.props.current === "hourly") ?
+            <HourlyWeather
+                APIData={this.state.APIResponse}/>
+            : (this.props.current === "five_day") ?
+                <FiveDayWeather
+                    APIData={this.state.APIResponse}/>
+                : <SevenDayWeather
+                    APIData={this.state.APIResponse}/>
+
         return (
             this.state.APIResponse != null ? (
                 <div className="weather-report-container">
                     <CurrentWeather
                         APIData={this.state.APIResponse}/>
-                    <HourlyWeather
-                        APIData={this.state.APIResponse} />
+                    {layout}
                 </div>
             ) : (
                 <div className="waitingMessage">
