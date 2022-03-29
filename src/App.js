@@ -1,6 +1,6 @@
 import day from './images/day_image.png'
-import five_day from './images/five_day_image.png'
-import seven_day from './images/seven_day_image.png'
+import five_day from './images/seven_day_image.png'
+import seven_day from './images/five_day_image.png'
 import './App.scss';
 import AppComponent from "./AppComponent";
 

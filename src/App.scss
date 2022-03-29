@@ -67,7 +67,6 @@
 
   width: 85vw;
   height: 75vh;
-  border: 1px solid blue;
 
   .current-time{
     font-size: 3rem;
@@ -98,7 +97,6 @@
 }
 
 .weather-container{
-  border: 1px solid green;
   position: fixed;
   left: 12vw;
   top: 40vh;
@@ -107,12 +105,18 @@
 }
 
 .weekly-layout{
-  border: 1px solid black;
   display: flex;
   flex-direction: row;
 
-  .hourly-layout{
+  .taller{
+    height: 45vh;
+  }
+
+  .shorter{
     height: 35vh;
+  }
+
+  .hourly-layout{
     width: 20%;
     margin: .75vw;
     display: flex;
@@ -121,6 +125,7 @@
     background: var(--background);
     border: 2px solid dimgrey;
     box-shadow: 1px 1px 1px 1px black;
+    transition: .75s ease;
 
     .card-top {
       display: flex;
@@ -146,11 +151,11 @@
         width: 22px;
         height: 22px;
         border: none;
-        transition: .5s ease;
+        transition: .75s ease;
       }
 
       .drop-button:hover{
-        transition: .5s ease;
+        transition: .75s ease;
         rotate: 180deg;
       }
     }
@@ -161,13 +166,13 @@
       }
 
       :last-child{
-        font-size: .75rem;
         margin: 0;
       }
     }
 
     .temp{
       color: #394738;
+      font-size: 1.25rem;
     }
 
     .feels-like{
@@ -183,9 +188,26 @@
         position: relative;
         left: 25%;
       }
-
       p{
         margin: 0;
+      }
+    }
+
+    .hidden{
+      visibility: hidden;
+      opacity: 0;
+    }
+
+    .additional_info{
+      border: 1px solid black;
+      position: relative;
+      margin: 2rem;
+      right: 20%;
+      transition-delay: .25s;
+      transition: .25s ease-in;
+
+      p{
+        margin: .5rem;
       }
     }
   }

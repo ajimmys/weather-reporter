@@ -75,6 +75,7 @@ class HourlyWeather extends Component {
         }
 
         this.loadDataToState = this.loadDataToState.bind(this)
+        this.toggleDetails = this.toggleDetails.bind(this)
 
     }
 
@@ -91,10 +92,11 @@ class HourlyWeather extends Component {
         this.setState({hour_1: {loaded: true}})
         for (let i = 1; i <= 9; i += 2) {
             let card_id = "hour_" + i
-            this.setState(prevState => ({
+            this.setState(() => ({
                 [card_id]: {
                     hour_mod: i,
                     loaded: true,
+                    show_details: false,
                     time: this.props.APIData['hourly'][i]['dt'],
                     temp: this.props.APIData['hourly'][i]['temp'],
                     feels_like: this.props.APIData['hourly'][i]['feels_like'],
@@ -109,20 +111,56 @@ class HourlyWeather extends Component {
         }
     }
 
+    toggleDetails(hour_mod){
+        if(hour_mod === 1){
+            this.setState(prevState => ({
+                hour_1 : {
+                    ...prevState.hour_1,
+                    show_details : !prevState.hour_1.show_details
+                }
+            }));
+        } else if (hour_mod === 3) {
+            this.setState(prevState => ({
+                hour_3 : {
+                    ...prevState.hour_3,
+                    show_details : !prevState.hour_3.show_details
+                }
+            }));
+        } else if (hour_mod === 5) {
+            this.setState(prevState => ({
+                hour_5 : {
+                    ...prevState.hour_5,
+                    show_details : !prevState.hour_5.show_details
+                }
+            }));
+        } else if (hour_mod === 7) {
+            this.setState(prevState => ({
+                hour_7 : {
+                    ...prevState.hour_7,
+                    show_details : !prevState.hour_7.show_details
+                }
+            }));
+        } else if (hour_mod === 9) {
+            this.setState(prevState => ({
+                hour_9 : {
+                    ...prevState.hour_9,
+                    show_details : !prevState.hour_9.show_details
+                }
+            }));
+        }
+    }
+
 
     //TODO ADD DROPDOWN FUNCTION FOR MORE DETAILS
     //TODO Add dropdown with more information
     render() {
-        let layouts = (<div>
-            <p>Loading Data...</p>
-        </div>)
 
-        if (this.state.hour_1['loaded']) {
-            layouts = Object.entries(this.state).map((hourly_data) =>
-                <span key={hourly_data[0]} className="hourly-layout">
+        let layouts = (this.state.hour_1['loaded']) ? (
+            Object.entries(this.state).map((hourly_data) =>
+                <span key={hourly_data[0]} className={`hourly-layout ${hourly_data[1]['show_details'] ? "taller" : "shorter"}`}>
                     <span className="card-top">
                         <p className='time'>{convertDt(hourly_data[1]['time'])}</p>
-                        <button className='drop-button' onClick={this.toggleDetails}> V </button>
+                        <button className='drop-button' onClick={() => this.toggleDetails(hourly_data[1]['hour_mod'])}> V </button>
                     </span>
                         <span className='weather-conditions'>
                         <img src={convertImage(hourly_data[1]['image_code'])}
@@ -134,9 +172,18 @@ class HourlyWeather extends Component {
                         <p>Feels like:</p>
                         <p>{hourly_data[1]['feels_like'] + ' \xB0F'}</p>
                     </span>
+                    <div className={`additional_info ${hourly_data[1]['show_details'] ? "" : "hidden"}`}>
+                        <p>{"Precipitation: " + hourly_data[1]['precipitation'] + "%"}</p>
+                        <p>{"Humidity: " + hourly_data[1]['humidity'] + "%"}</p>
+                        <p>{"Wind: " + hourly_data[1]['wind'] + "MPH"}</p>
+                        <p>{"UV Index: " + hourly_data[1]['uv_index']}</p>
+                    </div>
                 </span>
-            )
-        }
+            )) : (
+                <div>
+                    Loading...
+                </div>
+        )
 
         return (
             <div className="weather-container weekly-layout">
