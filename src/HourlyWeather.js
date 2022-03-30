@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {convertDt, convertImage, convertDescription} from './converstions'
+import {convertImage, convertDescription, convertDtHour} from './converstions'
 
 
 class HourlyWeather extends Component {
@@ -157,9 +157,9 @@ class HourlyWeather extends Component {
 
         let layouts = (this.state.hour_1['loaded']) ? (
             Object.entries(this.state).map((hourly_data) =>
-                <span key={hourly_data[0]} className={`hourly-layout ${hourly_data[1]['show_details'] ? "taller" : "shorter"}`}>
+                <span key={hourly_data[0]} className={`card-layout ${hourly_data[1]['show_details'] ? "taller" : "shorter"}`}>
                     <span className="card-top">
-                        <p className='time'>{convertDt(hourly_data[1]['time'])}</p>
+                        <p className='time'>{convertDtHour(hourly_data[1]['time'])}</p>
                         <button className='drop-button' onClick={() => this.toggleDetails(hourly_data[1]['hour_mod'])}> V </button>
                     </span>
                         <span className='weather-conditions'>
@@ -167,13 +167,15 @@ class HourlyWeather extends Component {
                              alt="Hour's Weather"/>
                         <p className='description'>{convertDescription(hourly_data[1]['description'])}</p>
                     </span>
+                    <span className="temperature-conditions">
                         <p className='temp'>{hourly_data[1]['temp'] + ' \xB0F'}</p>
                         <span className='feels-like'>
                         <p>Feels like:</p>
                         <p>{hourly_data[1]['feels_like'] + ' \xB0F'}</p>
                     </span>
+                        </span>
                     <div className={`additional_info ${hourly_data[1]['show_details'] ? "" : "hidden"}`}>
-                        <p>{"Precipitation: " + hourly_data[1]['precipitation'] + "%"}</p>
+                        <p>{"Precipitation: " + (hourly_data[1]['precipitation']*100) + "%"}</p>
                         <p>{"Humidity: " + hourly_data[1]['humidity'] + "%"}</p>
                         <p>{"Wind: " + hourly_data[1]['wind'] + "MPH"}</p>
                         <p>{"UV Index: " + hourly_data[1]['uv_index']}</p>
@@ -186,7 +188,7 @@ class HourlyWeather extends Component {
         )
 
         return (
-            <div className="weather-container weekly-layout">
+            <div className="weather-container hourly-layout">
                 {layouts}
             </div>
         );

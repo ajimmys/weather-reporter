@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {convertDt, convertDescription} from './converstions'
+import {convertDtDay, convertDescription, convertDtHour} from './converstions'
 
 
 class CurrentWeather extends Component{
@@ -12,10 +12,13 @@ class CurrentWeather extends Component{
     render(){
         return(
             <div className="current-weather">
-                <span className="current-time">{convertDt(this.props.APIData["current"]["dt"])}</span>
                 <span className="current-temp">
                     <span>{convertDescription(this.props.APIData["current"]["weather"][0]["description"])}</span>
                     <p>{this.props.APIData["current"]["temp"]+ ' \xB0F'}</p>
+                </span>
+                <span className="current-time">
+                    {convertDtDay(this.props.APIData["current"]["dt"])+ " "+
+                        convertDtHour(this.props.APIData["current"]["dt"])}
                 </span>
             </div>
         );

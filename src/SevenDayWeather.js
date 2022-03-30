@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {convertDt, convertImage, convertDescription} from './converstions'
+import {dayTextReformat, convertImage, convertDescription} from './converstions'
 
 
 class SevenDayWeather extends Component {
@@ -159,7 +159,7 @@ class SevenDayWeather extends Component {
             Object.entries(this.state).map((hourly_data) =>
                 <span key={hourly_data[0]} className={`hourly-layout ${hourly_data[1]['show_details'] ? "taller" : "shorter"}`}>
                     <span className="card-top">
-                        <p className='time'>{convertDt(hourly_data[1]['time'])}</p>
+                        <p className='time'>{dayTextReformat(hourly_data[1]['day_mod'], hourly_data[1]['time'])}</p>
                         <button className='drop-button' onClick={() => this.toggleDetails(hourly_data[1]['hour_mod'])}> V </button>
                     </span>
                         <span className='weather-conditions'>

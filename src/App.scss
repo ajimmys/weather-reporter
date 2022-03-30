@@ -2,11 +2,19 @@
   --background: #7CAE7A;
   --primary-text: #564592;
   --high-color: #A30B37;
-  --low-color: #87BCDE;
+  --low-color: #007EA7;
   --accent-one: #FC9E4F;
+
+  background: darkgrey;
+}
+
+.weather-report-container{
+  position: relative;
 }
 
 .controls{
+
+  z-index: 1;
   display: flex;
   flex-direction: column;
   position: fixed;
@@ -38,35 +46,29 @@
 }
 
 .attributions{
-  position: fixed;
-  top: 95vh;
+
+  position: relative;
   text-align: center;
 }
 
 .App {
-  background-color: darkgrey;
   color: var(--primary-text);
-  height: 100vh;
 }
 
 .waitingMessage{
   position: fixed;
+  left: 25vw;
+  top: 25vh;
   font-size: 2rem;
-  left: 50vw;
-  top: 50vh;
 }
 
 .current-weather{
   display: grid;
   grid-template-columns: 25% 50% 25%;
   grid-template-rows: 15% 22% 63% ;
-  position: fixed;
 
-  top: 5vh;
-  left: 12vw;
-
-  width: 85vw;
-  height: 75vh;
+  width: 100vw;
+  height: 85vh;
 
   .current-time{
     font-size: 3rem;
@@ -97,92 +99,98 @@
 }
 
 .weather-container{
-  position: fixed;
+
+  position: relative;
   left: 12vw;
-  top: 40vh;
+  bottom: 40vh;
   width: 85vw;
   height: 55vh;
-}
 
-.weekly-layout{
   display: flex;
   flex-direction: row;
+}
 
-  .taller{
-    height: 45vh;
-  }
+.card-layout{
+  width: 20%;
+  margin: .75vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--background);
+  border: 2px solid dimgrey;
+  box-shadow: 1px 1px 1px 1px black;
+  transition: .75s ease;
 
-  .shorter{
-    height: 35vh;
-  }
-
-  .hourly-layout{
-    width: 20%;
-    margin: .75vw;
+  .card-top {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
-    background: var(--background);
-    border: 2px solid dimgrey;
-    box-shadow: 1px 1px 1px 1px black;
-    transition: .75s ease;
+    justify-content: space-between;
+    width: 100%;
+    height: 4vh;
 
-    .card-top {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: space-between;
-      width: 100%;
-      height: 4vh;
-
-      .time {
-        font-weight: bold;
-        font-size: 1.25rem;
-        filter: drop-shadow(1px 1px gray);
-      }
-
-      .drop-button{
-        font-weight: bold;
-        color: white;
-        position: relative;
-        right: 10px;
-        border-radius: 100px;
-        background: grey;
-        width: 22px;
-        height: 22px;
-        border: none;
-        transition: .75s ease;
-      }
-
-      .drop-button:hover{
-        transition: .75s ease;
-        rotate: 180deg;
-      }
+    .time {
+      font-weight: bold;
+      font-size: 1.25rem;
+      filter: drop-shadow(1px 1px gray);
     }
 
-    .weather-conditions{
-      :first-child{
-        width: 72px;
-      }
-
-      :last-child{
-        margin: 0;
-      }
+    .drop-button{
+      font-weight: bold;
+      color: white;
+      position: relative;
+      right: 10px;
+      border-radius: 100px;
+      background: grey;
+      width: 22px;
+      height: 22px;
+      border: none;
+      transition: .75s ease;
     }
+
+    .drop-button:hover{
+      transition: .75s ease;
+      rotate: 180deg;
+    }
+  }
+
+  .weather-conditions{
+    :first-child{
+      width: 72px;
+    }
+
+    :last-child{
+      margin: 0;
+    }
+  }
+
+  .temperature-conditions{
 
     .temp{
       color: #394738;
       font-size: 1.25rem;
+      right: 25%;
+    }
+
+    .high-low-temp{
+      margin-bottom: 2vh;
+
+      .low-temp{
+        margin-right: 1vw;
+        color: var(--low-color)
+      }
+      .high-temp{
+        margin-left: 1vw;
+        color: var(--high-color)
+      }
     }
 
     .feels-like{
-      bottom: 0;
       font-size: .75rem;
       color: #4B594A;
 
       :first-child{
         position: relative;
-        right: 25%;
       }
       :last-child{
         position: relative;
@@ -192,23 +200,42 @@
         margin: 0;
       }
     }
+  }
 
-    .hidden{
-      visibility: hidden;
-      opacity: 0;
+  .hidden{
+    visibility: hidden;
+    opacity: 0;
+  }
+
+  .additional_info{
+    margin: 2vw;
+    width: 100%;
+    transition-delay: .25s;
+    transition: .25s ease-in;
+
+    p{
+      margin: .5rem;
     }
+  }
+}
 
-    .additional_info{
-      border: 1px solid black;
-      position: relative;
-      margin: 2rem;
-      right: 20%;
-      transition-delay: .25s;
-      transition: .25s ease-in;
 
-      p{
-        margin: .5rem;
-      }
-    }
+.weekly-layout{
+  .taller{
+    height: 57vh;
+  }
+
+  .shorter{
+    height: 35vh;
+  }
+}
+
+.hourly-layout{
+  .taller{
+    height: 47vh;
+  }
+
+  .shorter{
+    height: 35vh;
   }
 }
