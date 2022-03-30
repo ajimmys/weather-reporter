@@ -138,47 +138,15 @@ class FiveDayWeather extends Component {
     }
 
     toggleDetails(day_mod) {
-        if (day_mod === 0) {
-            this.setState(prevState => ({
-                day_0: {
-                    ...prevState.day_0,
-                    show_details: !prevState.day_0.show_details
-                }
-            }));
-        } else if (day_mod === 1) {
-            this.setState(prevState => ({
-                day_1: {
-                    ...prevState.day_1,
-                    show_details: !prevState.day_1.show_details
-                }
-            }));
-        } else if (day_mod === 2) {
-            this.setState(prevState => ({
-                day_2: {
-                    ...prevState.day_2,
-                    show_details: !prevState.day_2.show_details
-                }
-            }));
-        } else if (day_mod === 3) {
-            this.setState(prevState => ({
-                day_3: {
-                    ...prevState.day_3,
-                    show_details: !prevState.day_3.show_details
-                }
-            }));
-        } else if (day_mod === 4) {
-            this.setState(prevState => ({
-                day_4: {
-                    ...prevState.day_4,
-                    show_details: !prevState.day_4.show_details
-                }
-            }));
-        }
+        let day_id = "day_" + day_mod
+        this.setState(prevState => ({
+            [day_id]: {
+                ...prevState[day_id],
+                show_details: !prevState[day_id].show_details
+            }
+        }))
     }
 
-
-    //TODO ADD DROPDOWN FUNCTION FOR MORE DETAILS
-    //TODO Add dropdown with more information
     render() {
 
         let layouts = (this.state.day_0['loaded']) ? (

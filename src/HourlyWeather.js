@@ -112,42 +112,13 @@ class HourlyWeather extends Component {
     }
 
     toggleDetails(hour_mod){
-        if(hour_mod === 1){
-            this.setState(prevState => ({
-                hour_1 : {
-                    ...prevState.hour_1,
-                    show_details : !prevState.hour_1.show_details
-                }
-            }));
-        } else if (hour_mod === 3) {
-            this.setState(prevState => ({
-                hour_3 : {
-                    ...prevState.hour_3,
-                    show_details : !prevState.hour_3.show_details
-                }
-            }));
-        } else if (hour_mod === 5) {
-            this.setState(prevState => ({
-                hour_5 : {
-                    ...prevState.hour_5,
-                    show_details : !prevState.hour_5.show_details
-                }
-            }));
-        } else if (hour_mod === 7) {
-            this.setState(prevState => ({
-                hour_7 : {
-                    ...prevState.hour_7,
-                    show_details : !prevState.hour_7.show_details
-                }
-            }));
-        } else if (hour_mod === 9) {
-            this.setState(prevState => ({
-                hour_9 : {
-                    ...prevState.hour_9,
-                    show_details : !prevState.hour_9.show_details
-                }
-            }));
-        }
+        let hour_id = "hour_" + hour_mod
+        this.setState(prevState => ({
+            [hour_id]: {
+                ...prevState[hour_id],
+                show_details: !prevState[hour_id].show_details
+            }
+        }))
     }
 
 
