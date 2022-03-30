@@ -121,9 +121,6 @@ class HourlyWeather extends Component {
         }))
     }
 
-
-    //TODO ADD DROPDOWN FUNCTION FOR MORE DETAILS
-    //TODO Add dropdown with more information
     render() {
 
         let layouts = (this.state.hour_1['loaded']) ? (
