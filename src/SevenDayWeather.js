@@ -1,193 +1,128 @@
 import React, {Component} from 'react'
-import {dayTextReformat, convertImage, convertDescription} from './converstions'
-
+import {convertFullDt, dayTextReformat, convertImage, convertDescription} from './converstions'
 
 class SevenDayWeather extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            hour_1: {
+            day_5: {
+                day_mod: 0,
                 loaded: false,
-                hour_mod: 1,
                 show_details: false,
                 time: 0,
-                temp: 0,
+                day_temp: 0,
+                low_temp: 0,
+                high_temp: 0,
                 feels_like: 0,
                 image_code: '',
                 description: '',
+                sunrise: '',
+                sunset: '',
                 precipitation: 0,
                 wind: 0,
                 humidity: 0,
                 uv_index: 0
             },
-            hour_3: {
-                hour_mod: 3,
+            day_6: {
+                day_mod: 0,
+                loaded: false,
                 show_details: false,
                 time: 0,
-                temp: 0,
+                day_temp: 0,
+                low_temp: 0,
+                high_temp: 0,
                 feels_like: 0,
                 image_code: '',
                 description: '',
+                sunrise: '',
+                sunset: '',
                 precipitation: 0,
                 wind: 0,
                 humidity: 0,
                 uv_index: 0
             },
-            hour_5: {
-                hour_mod: 5,
-                show_details: false,
-                time: 0,
-                temp: 0,
-                feels_like: 0,
-                image_code: '',
-                description: '',
-                precipitation: 0,
-                wind: 0,
-                humidity: 0,
-                uv_index: 0
-            },
-            hour_7: {
-                hour_mod: 7,
-                show_details: false,
-                time: 0,
-                temp: 0,
-                feels_like: 0,
-                image_code: '',
-                description: '',
-                precipitation: 0,
-                wind: 0,
-                humidity: 0,
-                uv_index: 0
-            },
-            hour_9: {
-                hour_mod: 9,
-                show_details: false,
-                time: 0,
-                temp: 0,
-                feels_like: 0,
-                image_code: '',
-                description: '',
-                precipitation: 0,
-                wind: 0,
-                humidity: 0,
-                uv_index: 0
-            }
         }
 
         this.loadDataToState = this.loadDataToState.bind(this)
-        this.toggleDetails = this.toggleDetails.bind(this)
-
     }
 
     componentDidMount() {
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if (this.state.hour_1['loaded'] === false) {
+        if (this.state.day_5['loaded'] === false) {
             this.loadDataToState()
         }
     }
 
     loadDataToState() {
-        this.setState({hour_1: {loaded: true}})
-        for (let i = 1; i <= 9; i += 2) {
-            let card_id = "hour_" + i
+        this.setState({day_5: {loaded: true}})
+        for (let i = 5; i <= 6; i++) {
+            let card_id = "day_" + i
             this.setState(() => ({
                 [card_id]: {
-                    hour_mod: i,
+                    day_mod: i,
                     loaded: true,
                     show_details: false,
-                    time: this.props.APIData['hourly'][i]['dt'],
-                    temp: this.props.APIData['hourly'][i]['temp'],
-                    feels_like: this.props.APIData['hourly'][i]['feels_like'],
-                    image_code: this.props.APIData['hourly'][i]['weather'][0]['icon'],
-                    description: this.props.APIData['hourly'][i]['weather'][0]['description'],
-                    precipitation: this.props.APIData['hourly'][i]['pop'],
-                    wind: this.props.APIData['hourly'][i]['wind_speed'],
-                    humidity: this.props.APIData['hourly'][i]['humidity'],
-                    uv_index: this.props.APIData['hourly'][i]['uvi'],
+                    time: this.props.APIData['daily'][i]['dt'],
+                    day_temp: Math.round(this.props.APIData['daily'][i]['temp']['day']),
+                    low_temp: Math.round(this.props.APIData['daily'][i]['temp']['min']),
+                    high_temp: Math.round(this.props.APIData['daily'][i]['temp']['max']),
+                    feels_like: Math.round(this.props.APIData['daily'][i]['feels_like']['day']),
+                    image_code: this.props.APIData['daily'][i]['weather'][0]['icon'],
+                    description: this.props.APIData['daily'][i]['weather'][0]['description'],
+                    sunrise: this.props.APIData['daily'][i]['sunrise'],
+                    sunset: this.props.APIData['daily'][i]['sunset'],
+                    precipitation: this.props.APIData['daily'][i]['pop'],
+                    wind: this.props.APIData['daily'][i]['wind_speed'],
+                    humidity: this.props.APIData['daily'][i]['humidity'],
+                    uv_index: this.props.APIData['daily'][i]['uvi'],
                 }
             }));
         }
     }
 
-    toggleDetails(hour_mod){
-        if(hour_mod === 1){
-            this.setState(prevState => ({
-                hour_1 : {
-                    ...prevState.hour_1,
-                    show_details : !prevState.hour_1.show_details
-                }
-            }));
-        } else if (hour_mod === 3) {
-            this.setState(prevState => ({
-                hour_3 : {
-                    ...prevState.hour_3,
-                    show_details : !prevState.hour_3.show_details
-                }
-            }));
-        } else if (hour_mod === 5) {
-            this.setState(prevState => ({
-                hour_5 : {
-                    ...prevState.hour_5,
-                    show_details : !prevState.hour_5.show_details
-                }
-            }));
-        } else if (hour_mod === 7) {
-            this.setState(prevState => ({
-                hour_7 : {
-                    ...prevState.hour_7,
-                    show_details : !prevState.hour_7.show_details
-                }
-            }));
-        } else if (hour_mod === 9) {
-            this.setState(prevState => ({
-                hour_9 : {
-                    ...prevState.hour_9,
-                    show_details : !prevState.hour_9.show_details
-                }
-            }));
-        }
-    }
-
-
-    //TODO ADD DROPDOWN FUNCTION FOR MORE DETAILS
-    //TODO Add dropdown with more information
     render() {
-
-        let layouts = (this.state.hour_1['loaded']) ? (
-            Object.entries(this.state).map((hourly_data) =>
-                <span key={hourly_data[0]} className={`hourly-layout ${hourly_data[1]['show_details'] ? "taller" : "shorter"}`}>
+        let layouts = (this.state.day_5['loaded']) ? (
+            Object.entries(this.state).map((daily_data) =>
+                <span key={daily_data[0]}
+                      className={"card-layout row-two"}>
                     <span className="card-top">
-                        <p className='time'>{dayTextReformat(hourly_data[1]['day_mod'], hourly_data[1]['time'])}</p>
-                        <button className='drop-button' onClick={() => this.toggleDetails(hourly_data[1]['hour_mod'])}> V </button>
+                        <p className='time'>{dayTextReformat(daily_data[1]['day_mod'], daily_data[1]['time'])}</p>
                     </span>
-                        <span className='weather-conditions'>
-                        <img src={convertImage(hourly_data[1]['image_code'])}
+                    <span className='weather-conditions'>
+                        <img src={convertImage(daily_data[1]['image_code'])}
                              alt="Hour's Weather"/>
-                        <p className='description'>{convertDescription(hourly_data[1]['description'])}</p>
+                        <p className='description'>{convertDescription(daily_data[1]['description'])}</p>
                     </span>
-                        <p className='temp'>{hourly_data[1]['temp'] + ' \xB0F'}</p>
+                    <span className="temperature-conditions">
+                        <p className='temp'>{daily_data[1]['day_temp'] + ' \xB0F'}</p>
+                        <div className="high-low-temp">
+                            <span className='low-temp'>{daily_data[1]['low_temp'] + ' \xB0F'}</span>
+                            <span className='high-temp'>{daily_data[1]['high_temp'] + ' \xB0F'}</span>
+                        </div>
                         <span className='feels-like'>
-                        <p>Feels like:</p>
-                        <p>{hourly_data[1]['feels_like'] + ' \xB0F'}</p>
+                            <p>Feels like:</p>
+                            <p>{daily_data[1]['feels_like'] + ' \xB0F'}</p>
+                        </span>
                     </span>
-                    <div className={`additional_info ${hourly_data[1]['show_details'] ? "" : "hidden"}`}>
-                        <p>{"Precipitation: " + hourly_data[1]['precipitation'] + "%"}</p>
-                        <p>{"Humidity: " + hourly_data[1]['humidity'] + "%"}</p>
-                        <p>{"Wind: " + hourly_data[1]['wind'] + "MPH"}</p>
-                        <p>{"UV Index: " + hourly_data[1]['uv_index']}</p>
+                    <div className="additional_info">
+                        <p>{"Sunrise: " + convertFullDt(daily_data[1]['sunrise'])}</p>
+                        <p>{"Sunset: " + convertFullDt(daily_data[1]['sunset'])}</p>
+                        <p>{"Precipitation: " + daily_data[1]['precipitation'] + "%"}</p>
+                        <p>{"Humidity: " + daily_data[1]['humidity'] + "%"}</p>
+                        <p>{"Wind: " + daily_data[1]['wind'] + "MPH"}</p>
+                        <p>{"UV Index: " + daily_data[1]['uv_index']}</p>
                     </div>
                 </span>
             )) : (
-            <div>
-                Loading...
-            </div>
+            <span>
+            </span>
         )
 
         return (
-            <div className="weather-container weekly-layout">
-                {"7 Day Layout"}
+            <div className="seven-day-container weekly-layout">
+                {layouts}
             </div>
         );
     }

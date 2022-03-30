@@ -25,62 +25,80 @@ class FiveDayWeather extends Component {
                 uv_index: 0
             },
             day_1: {
-                hour_mod: 3,
+                day_mod: 1,
+                loaded: false,
                 show_details: false,
                 time: 0,
-                temp: 0,
+                day_temp: 0,
+                low_temp: 0,
+                high_temp: 0,
                 feels_like: 0,
                 image_code: '',
                 description: '',
+                sunrise: '',
+                sunset: '',
                 precipitation: 0,
                 wind: 0,
                 humidity: 0,
                 uv_index: 0
             },
             day_2: {
-                hour_mod: 5,
+                day_mod: 2,
+                loaded: false,
                 show_details: false,
                 time: 0,
-                temp: 0,
+                day_temp: 0,
+                low_temp: 0,
+                high_temp: 0,
                 feels_like: 0,
                 image_code: '',
                 description: '',
+                sunrise: '',
+                sunset: '',
                 precipitation: 0,
                 wind: 0,
                 humidity: 0,
                 uv_index: 0
             },
             day_3: {
-                hour_mod: 7,
+                day_mod: 3,
+                loaded: false,
                 show_details: false,
                 time: 0,
-                temp: 0,
+                day_temp: 0,
+                low_temp: 0,
+                high_temp: 0,
                 feels_like: 0,
                 image_code: '',
                 description: '',
+                sunrise: '',
+                sunset: '',
                 precipitation: 0,
                 wind: 0,
                 humidity: 0,
                 uv_index: 0
             },
             day_4: {
-                hour_mod: 9,
+                day_mod: 4,
+                loaded: false,
                 show_details: false,
                 time: 0,
-                temp: 0,
+                day_temp: 0,
+                low_temp: 0,
+                high_temp: 0,
                 feels_like: 0,
                 image_code: '',
                 description: '',
+                sunrise: '',
+                sunset: '',
                 precipitation: 0,
                 wind: 0,
                 humidity: 0,
                 uv_index: 0
             }
         }
-
         this.loadDataToState = this.loadDataToState.bind(this)
         this.toggleDetails = this.toggleDetails.bind(this)
-
     }
 
     componentDidMount() {
@@ -102,10 +120,10 @@ class FiveDayWeather extends Component {
                     loaded: true,
                     show_details: false,
                     time: this.props.APIData['daily'][i]['dt'],
-                    day_temp: this.props.APIData['daily'][i]['temp']['day'],
-                    low_temp: this.props.APIData['daily'][i]['temp']['min'],
-                    high_temp: this.props.APIData['daily'][i]['temp']['max'],
-                    feels_like: this.props.APIData['daily'][i]['feels_like']['day'],
+                    day_temp: Math.round(this.props.APIData['daily'][i]['temp']['day']),
+                    low_temp: Math.round(this.props.APIData['daily'][i]['temp']['min']),
+                    high_temp: Math.round(this.props.APIData['daily'][i]['temp']['max']),
+                    feels_like: Math.round(this.props.APIData['daily'][i]['feels_like']['day']),
                     image_code: this.props.APIData['daily'][i]['weather'][0]['icon'],
                     description: this.props.APIData['daily'][i]['weather'][0]['description'],
                     sunrise: this.props.APIData['daily'][i]['sunrise'],
@@ -166,7 +184,7 @@ class FiveDayWeather extends Component {
         let layouts = (this.state.day_0['loaded']) ? (
             Object.entries(this.state).map((daily_data) =>
                 <span key={daily_data[0]}
-                      className={`card-layout ${daily_data[1]['show_details'] ? "taller" : "shorter"}`}>
+                      className={`card-layout row-one ${daily_data[1]['show_details'] ? "taller focus" : "shorter"}`}>
                     <span className="card-top">
                         <p className='time'>{dayTextReformat(daily_data[1]['day_mod'], daily_data[1]['time'])}</p>
                         <button className='drop-button'
@@ -180,15 +198,15 @@ class FiveDayWeather extends Component {
                     <span className="temperature-conditions">
                         <p className='temp'>{daily_data[1]['day_temp'] + ' \xB0F'}</p>
                         <div className="high-low-temp">
-                            <span className='low-temp'>{daily_data[1]['low_temp']}</span>
-                            <span className='high-temp'>{daily_data[1]['high_temp']}</span>
+                            <span className='low-temp'>{daily_data[1]['low_temp'] + ' \xB0F'}</span>
+                            <span className='high-temp'>{daily_data[1]['high_temp'] + ' \xB0F'}</span>
                         </div>
                         <span className='feels-like'>
                             <p>Feels like:</p>
                             <p>{daily_data[1]['feels_like'] + ' \xB0F'}</p>
                         </span>
                     </span>
-                    <div className={`additional_info ${daily_data[1]['show_details'] ? "" : "hidden"}`}>
+                    <div className={`additional_info ${daily_data[1]['show_details'] ? "focus" : "hidden"}`}>
                         <p>{"Sunrise: " + convertFullDt(daily_data[1]['sunrise'])}</p>
                         <p>{"Sunset: " + convertFullDt(daily_data[1]['sunset'])}</p>
                         <p>{"Precipitation: " + daily_data[1]['precipitation'] + "%"}</p>

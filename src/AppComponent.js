@@ -69,8 +69,14 @@ class AppComponent extends Component{
             : (this.props.current === "five_day") ?
                 <FiveDayWeather
                     APIData={this.state.APIResponse}/>
-                : <SevenDayWeather
-                    APIData={this.state.APIResponse}/>
+                : (
+                    <span>
+                        <FiveDayWeather
+                            APIData={this.state.APIResponse}/>
+                        <SevenDayWeather
+                            APIData={this.state.APIResponse}/>
+                    </span>
+                )
 
         return (
             this.state.APIResponse != null ? (

@@ -14,7 +14,7 @@ class CurrentWeather extends Component{
             <div className="current-weather">
                 <span className="current-temp">
                     <span>{convertDescription(this.props.APIData["current"]["weather"][0]["description"])}</span>
-                    <p>{this.props.APIData["current"]["temp"]+ ' \xB0F'}</p>
+                    <p>{Math.round(this.props.APIData["current"]["temp"])+ ' \xB0F'}</p>
                 </span>
                 <span className="current-time">
                     {convertDtDay(this.props.APIData["current"]["dt"])+ " "+

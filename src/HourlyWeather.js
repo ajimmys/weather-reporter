@@ -98,8 +98,8 @@ class HourlyWeather extends Component {
                     loaded: true,
                     show_details: false,
                     time: this.props.APIData['hourly'][i]['dt'],
-                    temp: this.props.APIData['hourly'][i]['temp'],
-                    feels_like: this.props.APIData['hourly'][i]['feels_like'],
+                    temp: Math.round(this.props.APIData['hourly'][i]['temp']),
+                    feels_like: Math.round(this.props.APIData['hourly'][i]['feels_like']),
                     image_code: this.props.APIData['hourly'][i]['weather'][0]['icon'],
                     description: this.props.APIData['hourly'][i]['weather'][0]['description'],
                     precipitation: this.props.APIData['hourly'][i]['pop'],
@@ -157,7 +157,7 @@ class HourlyWeather extends Component {
 
         let layouts = (this.state.hour_1['loaded']) ? (
             Object.entries(this.state).map((hourly_data) =>
-                <span key={hourly_data[0]} className={`card-layout ${hourly_data[1]['show_details'] ? "taller" : "shorter"}`}>
+                <span key={hourly_data[0]} className={`card-layout row-one ${hourly_data[1]['show_details'] ? "taller" : "shorter"}`}>
                     <span className="card-top">
                         <p className='time'>{convertDtHour(hourly_data[1]['time'])}</p>
                         <button className='drop-button' onClick={() => this.toggleDetails(hourly_data[1]['hour_mod'])}> V </button>
