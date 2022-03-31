@@ -1,3 +1,5 @@
+import React from "react";
+
 export function convertDtHour(dt){
     let date = new Date(dt*1000);
     let hour = date.getHours()
@@ -14,6 +16,12 @@ export function convertDtHour(dt){
     }
 }
 
+export function convertDtDay(dt) {
+    let date = new Date(dt*1000)
+    let list = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+    return list[date.getDay()]
+}
+
 export function dayTextReformat(day_mod, dt){
     return (day_mod === 0) ? "Today" : (day_mod===1) ? "Tomorrow" : convertDtDay(dt)
 }
@@ -27,11 +35,6 @@ export function convertFullDt(dt){
     return hour + ":" + minutes + " " + ampm
 }
 
-export function convertDtDay(dt) {
-    let date = new Date(dt*1000)
-    let list = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
-    return list[date.getDay()]
-}
 
 export function convertImage(imageID){
     return 'http://openweathermap.org/img/wn/'+ imageID + '.png'
@@ -48,4 +51,30 @@ export function convertDescription(description) {
     }
 
     return words
+}
+
+export function loadDataToState(card_count, alter_count, caller){
+    for(let i = 0; i <= card_count; i++){
+        let card_id = "day_" + i
+        caller.setState(() => ({
+            [card_id]: {
+                day_mod: i+alter_count,
+                loaded: true,
+                show_details: false,
+                time: this.props.APIData['daily'][i+alter_count]['dt'],
+                day_temp: Math.round(this.props.APIData['daily'][i+alter_count]['temp']['day']),
+                low_temp: Math.round(this.props.APIData['daily'][i+alter_count]['temp']['min']),
+                high_temp: Math.round(this.props.APIData['daily'][i+alter_count]['temp']['max']),
+                feels_like: Math.round(this.props.APIData['daily'][i+alter_count]['feels_like']['day']),
+                image_code: this.props.APIData['daily'][i+alter_count]['weather'][0]['icon'],
+                description: this.props.APIData['daily'][i+alter_count]['weather'][0]['description'],
+                sunrise: this.props.APIData['daily'][i+alter_count]['sunrise'],
+                sunset: this.props.APIData['daily'][i+alter_count]['sunset'],
+                precipitation: this.props.APIData['daily'][i+alter_count]['pop'],
+                wind: Math.round(this.props.APIData['daily'][i+alter_count]['wind_speed']),
+                humidity: this.props.APIData['daily'][i+alter_count]['humidity'],
+                uv_index: this.props.APIData['daily'][i+alter_count]['uvi'],
+            }
+        }));
+    }
 }

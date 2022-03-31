@@ -1,11 +1,11 @@
 import React, {Component} from 'react'
-import {convertFullDt, dayTextReformat, convertImage, convertDescription} from './converstions'
+import {convertFullDt, dayTextReformat, convertImage, convertDescription, loadDataToState} from './converstions'
 
 class SevenDayWeather extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            day_5: {
+            day_0: {
                 day_mod: 0,
                 loaded: false,
                 show_details: false,
@@ -23,7 +23,7 @@ class SevenDayWeather extends Component {
                 humidity: 0,
                 uv_index: 0
             },
-            day_6: {
+            day_1: {
                 day_mod: 0,
                 loaded: false,
                 show_details: false,
@@ -43,47 +43,20 @@ class SevenDayWeather extends Component {
             },
         }
 
-        this.loadDataToState = this.loadDataToState.bind(this)
+        this.loadDataToState = loadDataToState.bind(this)
     }
 
     componentDidMount() {
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if (this.state.day_5['loaded'] === false) {
-            this.loadDataToState()
-        }
-    }
-
-    loadDataToState() {
-        this.setState({day_5: {loaded: true}})
-        for (let i = 5; i <= 6; i++) {
-            let card_id = "day_" + i
-            this.setState(() => ({
-                [card_id]: {
-                    day_mod: i,
-                    loaded: true,
-                    show_details: false,
-                    time: this.props.APIData['daily'][i]['dt'],
-                    day_temp: Math.round(this.props.APIData['daily'][i]['temp']['day']),
-                    low_temp: Math.round(this.props.APIData['daily'][i]['temp']['min']),
-                    high_temp: Math.round(this.props.APIData['daily'][i]['temp']['max']),
-                    feels_like: Math.round(this.props.APIData['daily'][i]['feels_like']['day']),
-                    image_code: this.props.APIData['daily'][i]['weather'][0]['icon'],
-                    description: this.props.APIData['daily'][i]['weather'][0]['description'],
-                    sunrise: this.props.APIData['daily'][i]['sunrise'],
-                    sunset: this.props.APIData['daily'][i]['sunset'],
-                    precipitation: this.props.APIData['daily'][i]['pop'],
-                    wind: this.props.APIData['daily'][i]['wind_speed'],
-                    humidity: this.props.APIData['daily'][i]['humidity'],
-                    uv_index: this.props.APIData['daily'][i]['uvi'],
-                }
-            }));
+        if (this.state.day_0['loaded'] === false) {
+            this.loadDataToState(1, 5, this)
         }
     }
 
     render() {
-        let layouts = (this.state.day_5['loaded']) ? (
+        let layouts = (this.state.day_0['loaded']) ? (
             Object.entries(this.state).map((daily_data) =>
                 <span key={daily_data[0]}
                       className={"card-layout row-two"}>
@@ -92,7 +65,7 @@ class SevenDayWeather extends Component {
                     </span>
                     <span className='weather-conditions'>
                         <img src={convertImage(daily_data[1]['image_code'])}
-                             alt="Hour's Weather"/>
+                             alt="Day's Weather"/>
                         <p className='description'>{convertDescription(daily_data[1]['description'])}</p>
                     </span>
                     <span className="temperature-conditions">

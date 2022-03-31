@@ -103,7 +103,7 @@ class HourlyWeather extends Component {
                     image_code: this.props.APIData['hourly'][i]['weather'][0]['icon'],
                     description: this.props.APIData['hourly'][i]['weather'][0]['description'],
                     precipitation: this.props.APIData['hourly'][i]['pop'],
-                    wind: this.props.APIData['hourly'][i]['wind_speed'],
+                    wind: Math.round(this.props.APIData['hourly'][i]['wind_speed']),
                     humidity: this.props.APIData['hourly'][i]['humidity'],
                     uv_index: this.props.APIData['hourly'][i]['uvi'],
                 }

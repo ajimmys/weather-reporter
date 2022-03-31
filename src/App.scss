@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300;400&display=swap');
+
 :root{
   --background: #7CAE7A;
   --primary-text: #564592;
@@ -128,7 +130,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  transition: .75s ease;
+  transition: 400ms ease-in;
 
   .card-top{
     display: flex;
@@ -161,8 +163,7 @@
   .additional_info {
     margin: 2vw;
     width: 100%;
-    transition-delay: .25s;
-    transition: .25s ease-in;
+    transition: 1s ease-in;
   }
 }
 
@@ -222,6 +223,7 @@
 
   .card-top {
     .time {
+      margin-left: .5vw;
       font-weight: bold;
       font-size: 1.25rem;
       filter: drop-shadow(1px 1px gray);
@@ -229,6 +231,10 @@
   }
 
   .weather-conditions{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
     :first-child{
       width: 72px;
     }
@@ -277,6 +283,7 @@
   }
 
   .hidden{
+    transition: 200ms ease-in;
     visibility: hidden;
     opacity: 0;
   }
