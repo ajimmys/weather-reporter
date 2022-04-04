@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import {convertDtDay, convertDescription, convertDtHour} from './converstions'
+import DrawWeather from "./DrawingWeather/DrawWeather";
 
 
 class CurrentWeather extends Component{
@@ -12,6 +13,7 @@ class CurrentWeather extends Component{
     render(){
         return(
             <div className="current-weather">
+                <DrawWeather currentCondition={this.props.APIData["current"]["weather"][0]["description"]} />
                 <span className="current-temp">
                     <span>{convertDescription(this.props.APIData["current"]["weather"][0]["description"])}</span>
                     <p>{Math.round(this.props.APIData["current"]["temp"])+ ' \xB0F'}</p>

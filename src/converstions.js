@@ -1,5 +1,3 @@
-import React from "react";
-
 export function convertDtHour(dt){
     let date = new Date(dt*1000);
     let hour = date.getHours()
